@@ -2,6 +2,7 @@
  * Handler for HTTP queries
  */
 import * as log4js from "log4js";
+import { Parser } from "./parser";
 
 const logger = log4js.getLogger();
 
@@ -13,15 +14,16 @@ export const HTTP_CODES = {
 export default class QueryHandler {
   static async getIngredientSummary(request, reply) {
     try {
-      logger.info("query handler for request", request);
-      return reply.response("works");
+      return reply.response(
+        await new Parser(request.params.ingredient).setIngredientURL()
+      );
     } catch (err) {
       logger.error(err);
       return reply.response(HTTP_CODES.ISE.message).code(HTTP_CODES.ISE.code);
     }
   }
 
-  static notfound(request, reply) {
+  static notfound(_, reply) {
     return reply
       .response(HTTP_CODES.NOT_FOUND.message)
       .code(HTTP_CODES.NOT_FOUND.code);
