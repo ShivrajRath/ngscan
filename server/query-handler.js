@@ -15,7 +15,7 @@ export default class QueryHandler {
   static async getIngredientSummary(request, reply) {
     try {
       return reply.response(
-        await new Parser(request.params.ingredient).setIngredientURL()
+        await new Parser(request.params.ingredient).build()
       );
     } catch (err) {
       logger.error(err);

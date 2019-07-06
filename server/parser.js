@@ -1,6 +1,7 @@
 import cheerio from "cheerio";
 import axios from "axios";
 import constants from "./constants";
+import { SummaryParser } from "./summaryParser";
 
 export class Parser {
   constructor(ingredient) {
@@ -30,5 +31,20 @@ export class Parser {
       }
     }
     return this;
+  }
+
+  async getIngredientDetails() {
+    if (!this.ingredientURL) {
+      this.ingredientNotFound = true;
+      return this;
+    }
+
+    const $ = await this.fetchData(this.ingredientURL);
+    this.summary = new SummaryParser($).build();
+    return this;
+  }
+
+  async build() {
+    return (await this.setIngredientURL()).getIngredientDetails();
   }
 }
