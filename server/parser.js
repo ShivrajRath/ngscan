@@ -15,7 +15,7 @@ export class Parser {
 
   async setIngredientURL() {
     const $ = await this.fetchData(
-      `${constants.urls.search}${this.ingredient}`
+      `${constants.urls.base}${constants.urls.search}${this.ingredient}`
     );
 
     const $AllMatch = $("#table-browse tbody tr");
